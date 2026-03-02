@@ -11,22 +11,19 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="no-print fixed top-0 left-0 right-0 z-50 flex h-[60px] items-center justify-between bg-charcoal px-6 shadow-md">
+    <nav className="no-print fixed top-0 left-0 right-0 z-50 flex h-[60px] items-center justify-between bg-charcoal px-3 shadow-md sm:px-6">
       {/* Brand */}
-      <Link href={viewMode === "internal" ? "/internal" : "/client"} className="flex items-center gap-1">
-        <span className="font-serif text-xl font-semibold text-warm-white tracking-wide">
+      <Link href={viewMode === "internal" ? "/internal" : "/client"} className="shrink-0">
+        <span className="font-serif text-lg font-semibold tracking-wide text-warm-white sm:text-xl">
           LAYA
-        </span>
-        <span className="font-serif text-xl italic font-normal text-sand">
-          Residences
         </span>
       </Link>
 
       {/* View tabs */}
-      <div className="flex items-center gap-1 rounded-full bg-charcoal-mid/50 p-0.5">
+      <div className="flex items-center gap-0.5 rounded-full bg-charcoal-mid/50 p-0.5 sm:gap-1">
         <Link
           href="/client"
-          className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 ${
+          className={`rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-wide transition-all duration-200 sm:px-4 sm:text-xs ${
             pathname.startsWith("/client")
               ? "bg-terracotta text-white"
               : "text-stone hover:text-warm-white"
@@ -36,7 +33,7 @@ export function Navbar() {
         </Link>
         <Link
           href="/internal"
-          className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 ${
+          className={`rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-wide transition-all duration-200 sm:px-4 sm:text-xs ${
             pathname.startsWith("/internal")
               ? "bg-terracotta text-white"
               : "text-stone hover:text-warm-white"
@@ -47,12 +44,12 @@ export function Navbar() {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
         {/* Price toggle - client view only */}
         {viewMode === "client" && (
           <button
             onClick={() => dispatch({ type: "TOGGLE_PRICING" })}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+            className={`flex items-center gap-1 rounded-full px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 sm:gap-1.5 sm:px-3 sm:text-xs ${
               showPricing
                 ? "bg-gold text-charcoal"
                 : "bg-charcoal-mid/50 text-stone hover:text-warm-white"
@@ -66,7 +63,7 @@ export function Navbar() {
         {/* CSV Export */}
         <button
           onClick={() => exportCSV(townhouses)}
-          className="flex items-center gap-1 rounded-full bg-charcoal-mid/50 px-3 py-1.5 text-xs font-medium text-stone transition-colors hover:text-warm-white"
+          className="flex items-center gap-1 rounded-full bg-charcoal-mid/50 px-2.5 py-1.5 text-[11px] font-medium text-stone transition-colors hover:text-warm-white sm:px-3 sm:text-xs"
           title="Export CSV"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -74,13 +71,13 @@ export function Navbar() {
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          CSV
+          <span className="hidden sm:inline">CSV</span>
         </button>
 
         {/* Print */}
         <button
           onClick={() => window.print()}
-          className="flex items-center rounded-full bg-charcoal-mid/50 p-2 text-stone transition-colors hover:text-warm-white"
+          className="flex items-center rounded-full bg-charcoal-mid/50 p-1.5 text-stone transition-colors hover:text-warm-white sm:p-2"
           title="Print"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

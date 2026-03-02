@@ -5,7 +5,7 @@ import { useAppState } from "@/providers/AppStateProvider";
 import { STATUS_CONFIG } from "@/lib/constants";
 
 export function HoverTooltip() {
-  const { hoveredId, townhouses, showPricing } = useAppState();
+  const { hoveredId, townhouses, showPricing, activeModal } = useAppState();
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function HoverTooltip() {
     return () => window.removeEventListener("mousemove", handler);
   }, []);
 
-  if (!hoveredId) return null;
+  if (!hoveredId || activeModal) return null;
   const th = townhouses.find((t) => t.id === hoveredId);
   if (!th) return null;
 
