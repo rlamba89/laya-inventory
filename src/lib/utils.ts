@@ -15,6 +15,8 @@ export function groupByStageAndArea(townhouses: Townhouse[]) {
 export function computeKpis(townhouses: Townhouse[]) {
   let estGrv = 0;
   let soldValue = 0;
+  let availableValue = 0;
+  let negotiationValue = 0;
   let soldCount = 0;
   let threeBed = 0;
   let fourBed = 0;
@@ -25,6 +27,12 @@ export function computeKpis(townhouses: Townhouse[]) {
       soldValue += th.pMax;
       soldCount++;
     }
+    if (th.status === "available") {
+      availableValue += th.pMax;
+    }
+    if (th.status === "negotiation") {
+      negotiationValue += th.pMax;
+    }
     if (th.beds === 3) threeBed++;
     if (th.beds === 4) fourBed++;
   }
@@ -32,6 +40,8 @@ export function computeKpis(townhouses: Townhouse[]) {
   return {
     estGrv,
     soldValue,
+    availableValue,
+    negotiationValue,
     soldRate: townhouses.length > 0 ? (soldCount / townhouses.length) * 100 : 0,
     soldCount,
     threeBed,

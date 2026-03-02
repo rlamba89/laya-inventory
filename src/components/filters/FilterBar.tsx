@@ -11,7 +11,7 @@ export function FilterBar() {
   const setFilter = (payload: Record<string, StatusFilter | BedsFilter | StageFilter>) =>
     dispatch({ type: "SET_FILTER", payload });
 
-  const stickyTop = viewMode === "internal" ? "top-[100px]" : "top-[60px]";
+  const stickyTop = "top-[60px]";
 
   return (
     <div className={`filter-bar no-print sticky ${stickyTop} z-30 border-b border-sand bg-white/95 px-8 py-4 backdrop-blur-sm`}>

@@ -15,19 +15,22 @@ export function LiveStats() {
   ];
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="grid grid-cols-4 gap-2 sm:flex sm:items-center sm:gap-3">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex flex-col items-center rounded-xl bg-charcoal-mid/40 px-4 py-2 backdrop-blur-sm"
+          className="flex flex-col items-center rounded-lg bg-warm-white px-2 py-1.5 shadow-sm sm:rounded-xl sm:px-4 sm:py-2"
         >
-          <span
-            className="font-sans text-2xl font-bold"
-            style={{ color: stat.color }}
-          >
-            {stat.value}
-          </span>
-          <span className="text-[9px] font-semibold uppercase tracking-wider text-sand/70">
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full sm:h-2 sm:w-2"
+              style={{ backgroundColor: stat.color }}
+            />
+            <span className="font-sans text-lg font-bold text-charcoal sm:text-2xl">
+              {stat.value}
+            </span>
+          </div>
+          <span className="text-[7px] font-semibold uppercase tracking-wider text-stone sm:text-[9px]">
             {stat.label}
           </span>
         </div>

@@ -3,8 +3,9 @@
 import { Townhouse, ViewMode } from "@/lib/types";
 import { AppStateProvider, useAppState } from "@/providers/AppStateProvider";
 import { Navbar } from "@/components/layout/Navbar";
-import { KpiBanner } from "@/components/kpi/KpiBanner";
+import { InternalDashboardHeader } from "@/components/dashboard/InternalDashboardHeader";
 import { HeroSection } from "@/components/hero/HeroSection";
+import { InteractiveSiteplan } from "@/components/hero/InteractiveSiteplan";
 import { FilterBar } from "@/components/filters/FilterBar";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { CompareBar } from "@/components/compare/CompareBar";
@@ -33,13 +34,20 @@ function SalesToolContent() {
   return (
     <div className="min-h-screen bg-warm-white">
       <Navbar />
-      <KpiBanner />
 
-      {/* Main content with top padding for fixed nav (and KPI banner on internal) */}
-      <main
-        className={viewMode === "internal" ? "pt-[100px]" : "pt-[60px]"}
-      >
-        <HeroSection />
+      <main className="pt-[60px]">
+        {viewMode === "internal" ? (
+          <>
+            <InternalDashboardHeader />
+            <section className="bg-charcoal px-4 py-6 sm:px-8 sm:py-8">
+              <div className="mx-auto w-full max-w-5xl">
+                <InteractiveSiteplan />
+              </div>
+            </section>
+          </>
+        ) : (
+          <HeroSection />
+        )}
         <FilterBar />
         <CardGrid />
       </main>
