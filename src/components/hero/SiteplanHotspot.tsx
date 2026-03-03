@@ -17,7 +17,11 @@ export function SiteplanHotspot({ id, x, y, status }: SiteplanHotspotProps) {
 
   return (
     <button
-      className="absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full px-1.5 py-0.5 text-[8px] font-bold text-white shadow-sm transition-transform hover:scale-125"
+      className="absolute z-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center
+                 min-w-[22px] h-[18px] rounded-full px-1.5 text-[9px] font-bold text-white
+                 ring-1 ring-white/30 shadow-sm
+                 opacity-70 transition-all duration-150 ease-out
+                 hover:opacity-95 hover:scale-[1.35] hover:shadow-md hover:ring-white/60"
       style={{
         left: `${x}%`,
         top: `${y}%`,
