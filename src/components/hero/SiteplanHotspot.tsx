@@ -18,7 +18,8 @@ export function SiteplanHotspot({ id, x, y, status }: SiteplanHotspotProps) {
   return (
     <button
       className="absolute z-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center
-                 min-w-[22px] h-[18px] rounded-full px-1.5 text-[9px] font-bold text-white
+                 w-[5px] h-[5px] sm:w-auto sm:h-[18px] sm:min-w-[22px]
+                 rounded-full sm:px-1.5 text-[0px] sm:text-[9px] font-bold text-white
                  ring-1 ring-white/30 shadow-sm
                  opacity-70 transition-all duration-150 ease-out
                  hover:opacity-95 hover:scale-[1.35] hover:shadow-md hover:ring-white/60"
