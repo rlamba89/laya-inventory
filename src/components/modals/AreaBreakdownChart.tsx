@@ -47,7 +47,7 @@ export function AreaBreakdownChart({ th }: { th: Townhouse }) {
                   }}
                 >
                   <span className="text-[11px] font-bold text-white">
-                    {val}m\u00B2
+                    {val}m²
                   </span>
                 </div>
               </div>

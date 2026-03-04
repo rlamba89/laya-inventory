@@ -104,6 +104,25 @@ body {
   animation: growWidth 0.6s var(--ease-smooth) both;
 }
 
+/* Hotspot pulse for available units */
+@keyframes hotspotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(92, 122, 78, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(92, 122, 78, 0); }
+}
+
+.animate-hotspot-pulse {
+  animation: hotspotPulse 2.5s ease-in-out infinite;
+}
+
+/* Hide scrollbar for carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Grain texture overlay */
 .grain-overlay::after {
   content: "";

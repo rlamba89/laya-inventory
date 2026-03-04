@@ -5,6 +5,7 @@ import { STATUS_CONFIG } from "@/lib/constants";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { PriceDisplay } from "@/components/shared/PriceDisplay";
 import { useAppDispatch } from "@/providers/AppStateProvider";
+import { useProject } from "@/providers/ProjectProvider";
 import { useCompare } from "@/hooks/useCompare";
 import { MouseEvent } from "react";
 
@@ -15,6 +16,7 @@ interface TownhouseCardProps {
 
 export function TownhouseCard({ th, index }: TownhouseCardProps) {
   const dispatch = useAppDispatch();
+  const { project } = useProject();
   const { isSelected, toggle } = useCompare();
   const selected = isSelected(th.id);
   const statusColor = STATUS_CONFIG[th.status].color;
@@ -35,8 +37,16 @@ export function TownhouseCard({ th, index }: TownhouseCardProps) {
 
   return (
     <div
-      className={`townhouse-card animate-fade-up group relative cursor-pointer overflow-hidden rounded-xl bg-white transition-all duration-200 hover:shadow-lg ${
-        th.status === "sold" ? "opacity-55" : ""
+      className={`townhouse-card animate-fade-up group relative cursor-pointer overflow-hidden rounded-xl bg-white transition-all duration-200 ${
+        th.status === "sold"
+          ? "opacity-55"
+          : th.status === "hold"
+            ? "opacity-80 hover:shadow-md"
+            : th.status === "available"
+              ? "hover:-translate-y-1 hover:shadow-lg"
+              : th.status === "negotiation"
+                ? "ring-1 ring-negotiation/20 hover:-translate-y-0.5 hover:shadow-lg"
+                : "hover:shadow-lg"
       } ${selected ? "ring-2 ring-gold" : ""}`}
       style={{
         animationDelay: `${index * 40}ms`,
@@ -47,6 +57,15 @@ export function TownhouseCard({ th, index }: TownhouseCardProps) {
       onMouseEnter={() => dispatch({ type: "SET_HOVERED", payload: th.id })}
       onMouseLeave={() => dispatch({ type: "SET_HOVERED", payload: null })}
     >
+      {/* Sold ribbon */}
+      {th.status === "sold" && (
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-16 w-16 overflow-hidden">
+          <div className="absolute right-[-20px] top-[8px] w-[80px] rotate-45 bg-sold py-0.5 text-center text-[8px] font-bold uppercase tracking-wider text-white shadow-sm">
+            Sold
+          </div>
+        </div>
+      )}
+
       {/* Status color strip */}
       <div
         className="h-[3.5px] w-full"
@@ -69,12 +88,13 @@ export function TownhouseCard({ th, index }: TownhouseCardProps) {
           {selected ? "\u2713" : "\u2713"}
         </button>
 
-        {/* TH number */}
+        {/* Unit number */}
         <h3 className="font-serif text-xl font-semibold text-charcoal">
-          TH {th.id}
+          {project.unit_label_short} {th.id}
         </h3>
         <p className="mt-0.5 text-[10.5px] text-charcoal-light">
-          {th.desc}
+          {th.type && <span className="font-semibold">{th.type} &ndash; </span>}
+          {th.beds} Bed, {th.baths} Bath, {th.cars} Car
         </p>
 
         {/* Pill tags */}
@@ -83,10 +103,10 @@ export function TownhouseCard({ th, index }: TownhouseCardProps) {
             {th.beds} Bed
           </span>
           <span className="rounded-full bg-ivory px-2 py-0.5 text-[10px] font-medium text-charcoal-mid">
-            {th.tot}m\u00B2
+            {th.tot}m²
           </span>
           <span className="rounded-full bg-ivory px-2 py-0.5 text-[10px] font-medium text-charcoal-mid">
-            {th.lot}m\u00B2 lot
+            {th.lot}m² lot
           </span>
         </div>
 

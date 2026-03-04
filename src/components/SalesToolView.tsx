@@ -2,7 +2,8 @@
 
 import { Townhouse, ViewMode } from "@/lib/types";
 import { AppStateProvider, useAppState } from "@/providers/AppStateProvider";
-import { Navbar } from "@/components/layout/Navbar";
+import { ClientNavbar } from "@/components/layout/ClientNavbar";
+import { InternalNavbar } from "@/components/layout/InternalNavbar";
 import { InternalDashboardHeader } from "@/components/dashboard/InternalDashboardHeader";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { InteractiveSiteplan } from "@/components/hero/InteractiveSiteplan";
@@ -33,7 +34,7 @@ function SalesToolContent() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <Navbar />
+      {viewMode === "client" ? <ClientNavbar /> : <InternalNavbar />}
 
       <main className="pt-[60px]">
         {viewMode === "internal" ? (
@@ -64,7 +65,11 @@ function SalesToolContent() {
       )}
       {activeModal?.type === "compare" && <CompareModal />}
       {activeModal?.type === "lightbox" && (
-        <ImageLightbox src={activeModal.src} />
+        <ImageLightbox
+          src={activeModal.src}
+          gallery={activeModal.gallery}
+          galleryIndex={activeModal.galleryIndex}
+        />
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Townhouse } from "@/lib/types";
 import { TownhouseCard } from "./TownhouseCard";
 
@@ -12,6 +13,13 @@ interface AreaGroupProps {
 export function AreaGroup({ area, townhouses, startIndex }: AreaGroupProps) {
   if (townhouses.length === 0) return null;
 
+  const summary = useMemo(() => {
+    const available = townhouses.filter((t) => t.status === "available").length;
+    const sold = townhouses.filter((t) => t.status === "sold").length;
+    const other = townhouses.length - available - sold;
+    return { available, sold, other };
+  }, [townhouses]);
+
   return (
     <div className="mb-6">
       <div className="mb-3 flex items-center gap-2">
@@ -22,6 +30,14 @@ export function AreaGroup({ area, townhouses, startIndex }: AreaGroupProps) {
         <span className="text-[10px] text-stone">
           ({townhouses.length})
         </span>
+        {/* Area summary bar */}
+        <div className="ml-auto flex items-center gap-2 text-[9px] font-medium">
+          <span className="text-available">{summary.available} avail</span>
+          <span className="text-sold">{summary.sold} sold</span>
+          {summary.other > 0 && (
+            <span className="text-stone">{summary.other} other</span>
+          )}
+        </div>
       </div>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3.5">
         {townhouses.map((th, i) => (

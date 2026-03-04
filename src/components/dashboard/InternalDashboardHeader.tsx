@@ -1,10 +1,12 @@
 "use client";
 
 import { useAppState } from "@/providers/AppStateProvider";
+import { useProject } from "@/providers/ProjectProvider";
 import { computeKpis, countByStatus, formatCurrency } from "@/lib/utils";
 
 export function InternalDashboardHeader() {
   const { townhouses } = useAppState();
+  const { project } = useProject();
   const kpis = computeKpis(townhouses);
   const counts = countByStatus(townhouses);
 
@@ -13,14 +15,15 @@ export function InternalDashboardHeader() {
       {/* Brand Header */}
       <div className="bg-sand-light px-4 pt-8 pb-4 text-center sm:px-8 sm:pt-10 sm:pb-6">
         <h1 className="font-serif text-3xl font-semibold text-charcoal sm:text-4xl">
-          LAYA{" "}
-          <em className="font-normal italic text-charcoal-light">
-            Residences
-          </em>
+          {project.name}
         </h1>
-        <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.2em] text-stone sm:text-[11px] sm:tracking-[0.3em]">
-          Mediterranean-Inspired Luxury Townhouses &mdash; Taigum, Brisbane
-        </p>
+        {(project.tagline || project.location) && (
+          <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.2em] text-stone sm:text-[11px] sm:tracking-[0.3em]">
+            {project.tagline}
+            {project.tagline && project.location && " \u2014 "}
+            {project.location}
+          </p>
+        )}
       </div>
 
       {/* Status Cards Row */}

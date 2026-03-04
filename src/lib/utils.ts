@@ -59,16 +59,16 @@ export function formatCurrency(value: number): string {
 }
 
 export function countByStatus(townhouses: Townhouse[]) {
-  const counts = { available: 0, sold: 0, negotiation: 0, hold: 0 };
+  const counts = { available: 0, sold: 0, negotiation: 0, hold: 0, unreleased: 0 };
   for (const th of townhouses) {
     counts[th.status]++;
   }
   return counts;
 }
 
-export function exportCSV(townhouses: Townhouse[]) {
+export function exportCSV(townhouses: Townhouse[], projectName = "Export") {
   const headers = [
-    "TH", "Stage", "Area", "Description", "Type", "Beds", "Baths", "Cars",
+    "Unit", "Stage", "Area", "Description", "Type", "Beds", "Baths", "Cars",
     "Total m²", "Lot m²", "Ground Internal", "Upper Internal", "Balcony",
     "Patio", "Front Yard", "Back Yard", "Price", "Status",
   ];
@@ -95,7 +95,8 @@ export function exportCSV(townhouses: Townhouse[]) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "LAYA_Residences_88_Townhouses.csv";
+  const safeName = projectName.replace(/[^a-zA-Z0-9]/g, "_");
+  link.download = `${safeName}_${townhouses.length}_Units.csv`;
   link.click();
   URL.revokeObjectURL(url);
 }

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useAppState, useAppDispatch } from "@/providers/AppStateProvider";
+import { useProject } from "@/providers/ProjectProvider";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Townhouse } from "@/lib/types";
 
@@ -24,6 +25,7 @@ const COMPARE_ROWS: { label: string; getValue: (th: Townhouse) => string | numbe
 export function CompareModal() {
   const { compareIds, townhouses, showPricing } = useAppState();
   const dispatch = useAppDispatch();
+  const { project } = useProject();
   const selected = townhouses.filter((th) => compareIds.includes(th.id));
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export function CompareModal() {
 
         <div className="p-8">
           <h2 className="font-serif text-2xl font-semibold text-charcoal">
-            Compare Townhouses
+            Compare {project.unit_label}s
           </h2>
 
           <div className="mt-6 overflow-x-auto">
@@ -69,7 +71,7 @@ export function CompareModal() {
                       key={th.id}
                       className="pb-3 pr-4 font-serif text-xl font-semibold text-charcoal"
                     >
-                      TH {th.id}
+                      {project.unit_label_short} {th.id}
                     </th>
                   ))}
                 </tr>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -16,8 +17,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "LAYA Residences — Sales Tool",
-  description: "Interactive sales tool for LAYA Residences, 88 Mediterranean-inspired luxury townhouses at Beams Road, Taigum, Brisbane.",
+  title: "Sales Tool",
+  description: "Interactive property sales and inventory tool",
 };
 
 export default function RootLayout({
@@ -26,10 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${playfair.variable} ${dmSans.variable} antialiased`}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider afterSignInUrl="/" afterSignUpUrl="/">
+      <html lang="en">
+        <body className={`${playfair.variable} ${dmSans.variable} antialiased`}>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

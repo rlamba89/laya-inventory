@@ -1,9 +1,5 @@
-import { getTownhouses } from "@/lib/data";
-import { SalesToolView } from "@/components/SalesToolView";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function ClientPage() {
-  const townhouses = await getTownhouses();
-  return <SalesToolView viewMode="client" townhouses={townhouses} />;
+export default function LegacyClientPage() {
+  redirect("/laya-residences/client");
 }

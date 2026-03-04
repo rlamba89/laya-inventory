@@ -1,19 +1,51 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useAppState, useAppDispatch } from "@/providers/AppStateProvider";
+import { useProject } from "@/providers/ProjectProvider";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { PriceDisplay } from "@/components/shared/PriceDisplay";
 import { StatusEditor } from "@/components/shared/StatusEditor";
 import { AreaBreakdownChart } from "./AreaBreakdownChart";
-import { FloorplanPreview } from "./FloorplanPreview";
+import { FloorplanViewer } from "./FloorplanViewer";
+import { UnitGallery } from "./UnitGallery";
 import { useCompare } from "@/hooks/useCompare";
+import { Media } from "@/lib/types";
 
 export function DetailModal({ thId }: { thId: number }) {
   const { townhouses } = useAppState();
   const dispatch = useAppDispatch();
+  const { project } = useProject();
   const { isSelected, toggle, canAdd } = useCompare();
   const th = townhouses.find((t) => t.id === thId);
+
+  const [unitMedia, setUnitMedia] = useState<Media[]>([]);
+
+  // Fetch media for this unit's type only (renders, floorplans)
+  // If unit has no type assigned, don't show any type media
+  useEffect(() => {
+    if (!th || !th.unitTypeId) {
+      setUnitMedia([]);
+      return;
+    }
+    let cancelled = false;
+
+    async function fetchMedia() {
+      try {
+        const res = await fetch(`/api/projects/${project.slug}/media?unit_type_id=${th!.unitTypeId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled) {
+          setUnitMedia(data.media ?? []);
+        }
+      } catch {
+        // Silently fail — media is optional enhancement
+      }
+    }
+
+    fetchMedia();
+    return () => { cancelled = true; };
+  }, [th, project.slug]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -28,6 +60,18 @@ export function DetailModal({ thId }: { thId: number }) {
   if (!th) return null;
 
   const selected = isSelected(th.id);
+
+  // Gallery media: renders, photos, gallery items (not floorplans, not siteplan)
+  const galleryMedia = useMemo(
+    () => unitMedia.filter((m) => ["render", "photo", "gallery"].includes(m.media_type)),
+    [unitMedia]
+  );
+
+  // Floorplan media
+  const floorplanMedia = useMemo(
+    () => unitMedia.filter((m) => m.media_type === "floorplan"),
+    [unitMedia]
+  );
 
   const stats = [
     { label: "Bedrooms", value: th.beds },
@@ -49,16 +93,23 @@ export function DetailModal({ thId }: { thId: number }) {
       >
         {/* Close button */}
         <button
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-sand-light text-charcoal-light transition-colors hover:bg-sand hover:text-charcoal"
+          className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-sand-light text-charcoal-light transition-colors hover:bg-sand hover:text-charcoal"
           onClick={() => dispatch({ type: "SET_MODAL", payload: null })}
         >
           &times;
         </button>
 
+        {/* Gallery at top */}
+        {galleryMedia.length > 0 && (
+          <div className="p-4 pb-0">
+            <UnitGallery media={galleryMedia} />
+          </div>
+        )}
+
         <div className="p-8">
           {/* Header */}
           <h2 className="font-serif text-3xl font-semibold text-charcoal">
-            Townhouse {th.id}
+            {project.unit_label} {th.id}
           </h2>
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-terracotta">
             {th.area} &middot; Stage {th.stg}
@@ -101,9 +152,12 @@ export function DetailModal({ thId }: { thId: number }) {
             <AreaBreakdownChart th={th} />
           </div>
 
-          {/* Floor plan */}
+          {/* Floor plan with variant tabs */}
           <div className="mt-6">
-            <FloorplanPreview type={th.type} />
+            <FloorplanViewer
+              unitType={th.type}
+              media={floorplanMedia.length > 0 ? floorplanMedia : undefined}
+            />
           </div>
 
           {/* Compare button */}

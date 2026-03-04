@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add @supabase/supabase-js @supabase/ssr)",
+      "Bash(pnpm build)",
+      "Bash(pnpm add -D dotenv)",
+      "Bash(npx next build)",
+      "Bash(find /Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/[projectSlug] -type d)",
+      "Bash(find /Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/[projectSlug] -type f -name \"page.tsx\" -o -name \"layout.tsx\")",
+      "Bash(pnpm add @clerk/nextjs)"
+    ],
+    "additionalDirectories": [
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/[projectSlug]",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/api/projects/[projectSlug]/prices",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/api/projects/[projectSlug]/stages",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/[projectSlug]/admin",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/api/projects/[projectSlug]",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/api/projects/[projectSlug]/media",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/[projectSlug]/client",
+      "/Users/rahul/asgard/one08/LAYA/laya_inventory/src/app/sign-in"
+    ]
+  }
+}
