@@ -1,10 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Public routes — client views and sign-in don't require authentication
+// Only sign-in page is public — everything else requires authentication
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
-  "/",
-  "/:projectSlug/client(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
