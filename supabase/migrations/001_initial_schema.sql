@@ -15,7 +15,7 @@ CREATE TABLE projects (
   siteplan_image_url  TEXT,
   siteplan_width      INT,
   siteplan_height     INT,
-  unit_label          TEXT NOT NULL DEFAULT 'Townhouse',
+  unit_label          TEXT NOT NULL DEFAULT 'Terrace Home',
   unit_label_short    TEXT NOT NULL DEFAULT 'TH',
   currency_code       TEXT NOT NULL DEFAULT 'AUD',
   currency_symbol     TEXT NOT NULL DEFAULT '$',
@@ -29,7 +29,7 @@ CREATE TABLE projects (
 -- ============================================
 
 -- Group types define hierarchy levels per project
--- Townhouses: "Stage" (order 1), "Area" (order 2)
+-- Terrace Homes: "Stage" (order 1), "Area" (order 2)
 -- High-rise:  "Tower" (order 1), "Floor" (order 2), "Wing" (order 3)
 -- Villas:     "Phase" (order 1), "Street" (order 2)
 CREATE TABLE group_types (

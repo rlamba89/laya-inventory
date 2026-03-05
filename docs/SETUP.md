@@ -88,7 +88,7 @@ This creates the `project-media` storage bucket (public) with read/write policie
 
 ### 4c. Seed Initial Data
 
-Seed the LAYA Residences project data (88 townhouses, stages, areas, prices, floorplans):
+Seed the LAYA Residences project data (88 terrace homes, stages, areas, prices, floorplans):
 
 ```bash
 npx tsx scripts/seed-supabase.ts

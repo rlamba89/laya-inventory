@@ -115,7 +115,7 @@ export function SettingsEditor({ project, projectSlug }: SettingsEditorProps) {
             Labels & Currency
           </h2>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Unit Label" value={unitLabel} onChange={setUnitLabel} placeholder="Townhouse" />
+            <Field label="Unit Label" value={unitLabel} onChange={setUnitLabel} placeholder="Terrace Home" />
             <Field label="Unit Label Short" value={unitLabelShort} onChange={setUnitLabelShort} placeholder="TH" />
             <Field label="Currency Symbol" value={currencySymbol} onChange={setCurrencySymbol} placeholder="$" />
             <Field label="Currency Code" value={currencyCode} onChange={setCurrencyCode} placeholder="AUD" />

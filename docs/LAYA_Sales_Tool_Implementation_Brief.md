@@ -1,13 +1,13 @@
 # LAYA RESIDENCES — INTERACTIVE SALES TOOL
 # Complete Implementation Brief
 
-> **Purpose of this document:** This is a comprehensive brief for Claude to build a standalone interactive sales tool for LAYA Residences. It contains everything needed — brand identity, design tokens, complete data for all 88 townhouses, siteplan layout, floor plan types, feature specifications, and implementation instructions. Feed this entire document into a new Claude conversation along with the siteplan and floor plan images to build the tool.
+> **Purpose of this document:** This is a comprehensive brief for Claude to build a standalone interactive sales tool for LAYA Residences. It contains everything needed — brand identity, design tokens, complete data for all 88 terrace homes, siteplan layout, floor plan types, feature specifications, and implementation instructions. Feed this entire document into a new Claude conversation along with the siteplan and floor plan images to build the tool.
 
 ---
 
 ## 1. PROJECT CONTEXT
 
-**Product:** LAYA Residences — 88 Mediterranean-inspired luxury townhouses at Beams Road, Taigum, Brisbane QLD.
+**Product:** LAYA Residences — 88 Mediterranean-inspired luxury terrace homes at Beams Road, Taigum, Brisbane QLD.
 
 **Developer:** TRK Property Group (boutique luxury developer, Brisbane-based, $1.5B+ pipeline)
 
@@ -45,7 +45,7 @@ The LAYA Residences website (layaresidences.com.au) is a Next.js pre-launch teas
 **Headlines / Display:**
 - Serif font — elegant, editorial, Mediterranean feel
 - **Use: `Playfair Display`** from Google Fonts (400, 500, 600, 700 weights + italic)
-- Applied to: Page titles, section headings, townhouse numbers in cards, modal headings
+- Applied to: Page titles, section headings, terrace home numbers in cards, modal headings
 
 **Body / UI:**
 - Clean geometric sans-serif
@@ -126,7 +126,7 @@ Use these phrases in the UI where appropriate:
 - "Design-led Living"
 - "Beams Road, Taigum — Brisbane"
 - "Designed by MAS Architects"
-- "88 Luxury Townhouses · 3 Stages"
+- "88 Luxury Terrace Homes · 3 Stages"
 - All 2-storey, all include 2-car garage, study, courtyard/patio
 - Amenities: Pool, recreation zone, swim school, landscaped communal spaces, internal roads
 - Price range: $1.60M to $1.90M (Stage 3 Reserve Outlook & Eastern Side are the premium tier)
@@ -143,12 +143,12 @@ The default view when the app loads. This is what the buyer sees on the agent's 
 - Hero section with siteplan image and live stats
 - Filter bar (Status / Bedrooms / Stage)
 - Card grid grouped by Stage → Area
-- Townhouse cards with: TH number, bed/bath/car config, total area, lot size, status badge
+- Terrace home cards with: TH number, bed/bath/car config, total area, lot size, status badge
 - Pricing is HIDDEN by default (agent toggles on/off via nav button)
 - Hover tooltips with quick details
 - Click-to-open detail modal with area breakdown chart and floorplan
-- Comparison mode (select up to 3 townhouses)
-- Sold townhouses appear dimmed (opacity 0.55)
+- Comparison mode (select up to 3 terrace homes)
+- Sold terrace homes appear dimmed (opacity 0.55)
 
 ### 3B. Internal View
 
@@ -185,7 +185,7 @@ Toggle via top navigation. For agent/director eyes only.
 - Top-left: Large "LAYA *Residences*" heading + "Mediterranean-Inspired Luxury · Taigum, Brisbane" subtitle
 - Top-right: Live stats cards (Available count, Sold count, Negotiating count, Total)
 - The siteplan should be zoomable/pannable (CSS transform) for tablet use
-- Clickable hotspot overlays on each townhouse (see Section 8 for positions)
+- Clickable hotspot overlays on each terrace home (see Section 8 for positions)
 
 ### 4C. Filter Bar
 
@@ -205,7 +205,7 @@ Toggle via top navigation. For agent/director eyes only.
 ### 4D. Card Grid
 
 - Grouped by **Stage (1, 2, 3)** → then by **Area** (Streetside, Shopside, Inner Circle, Reserve Outlook, Eastern Side)
-- Stage header: Playfair Display serif, with badge showing townhouse count
+- Stage header: Playfair Display serif, with badge showing terrace home count
 - Area header: Small uppercase terracotta text with a dot bullet
 - Cards use CSS Grid: `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))`, gap 14px
 - Cards have a thin colour strip at the top matching their status colour
@@ -251,7 +251,7 @@ Opens when a card is clicked. Full-screen overlay with centred modal panel.
 ```
 ┌──────────────────────────────────┐
 │ [×]                              │
-│ Townhouse 14                     │ ← h2, Playfair Display
+│ Terrace Home 14                  │ ← h2, Playfair Display
 │ SHOPSIDE · STAGE 1               │ ← Area label, terracotta
 │ [AVAILABLE]                      │ ← Status badge
 │──────────────────────────────────│
@@ -282,7 +282,7 @@ Opens when a card is clicked. Full-screen overlay with centred modal panel.
 - Ground Living (terracotta), Upper Living (olive), Garage (navy), Outdoor total (gold)
 - Bars animate from 0 to final width when modal opens
 - Each bar shows the m² value as white text inside the bar
-- Scale is relative to the largest value in that specific townhouse
+- Scale is relative to the largest value in that specific terrace home
 
 ### 4H. Comparison Mode
 
@@ -304,7 +304,7 @@ Opens when a card is clicked. Full-screen overlay with centred modal panel.
 
 ### 4I. Floorplan Preview
 
-Each townhouse has a type letter (A, B, C, D, E, F, G, H, J) that maps to an architect floor plan. The detail modal should show the corresponding floor plan image.
+Each terrace home has a type letter (A, B, C, D, E, F, G, H, J) that maps to an architect floor plan. The detail modal should show the corresponding floor plan image.
 
 **Implementation approach:**
 - Floor plan images will be provided as separate PNG files
@@ -315,11 +315,11 @@ Each townhouse has a type letter (A, B, C, D, E, F, G, H, J) that maps to an arc
 
 ### 4J. Siteplan Hotspots (Interactive Map)
 
-The hero section displays the architect's siteplan with clickable overlays on each townhouse.
+The hero section displays the architect's siteplan with clickable overlays on each terrace home.
 
 **Implementation:**
 - The siteplan image is the background of the hero section
-- On top of the image, position absolute `<div>` hotspots for each townhouse
+- On top of the image, position absolute `<div>` hotspots for each terrace home
 - Each hotspot is a small rounded pill showing "TH ##"
 - Hotspots are colour-coded by status (using the status colours)
 - Hover shows tooltip
@@ -329,8 +329,8 @@ The hero section displays the architect's siteplan with clickable overlays on ea
 ### 4K. CSV Export
 
 - Button in nav bar (download icon)
-- Exports all 88 townhouses as CSV with columns: TH, Stage, Area, Description, Type, Beds, Baths, Cars, Total m², Lot m², Ground Internal, Upper Internal, Balcony, Patio, Front Yard, Back Yard, Price, Status
-- File named `LAYA_Residences_88_Townhouses.csv`
+- Exports all 88 terrace homes as CSV with columns: TH, Stage, Area, Description, Type, Beds, Baths, Cars, Total m², Lot m², Ground Internal, Upper Internal, Balcony, Patio, Front Yard, Back Yard, Price, Status
+- File named `LAYA_Residences_88_Terrace_Homes.csv`
 
 ### 4L. Print Styles
 
@@ -344,13 +344,13 @@ The hero section displays the architect's siteplan with clickable overlays on ea
 
 ---
 
-## 5. COMPLETE DATA — 88 Townhouses
+## 5. COMPLETE DATA — 88 Terrace Homes
 
 ### 5.1 Data Structure
 
 ```javascript
 {
-  id: Number,           // Townhouse number (1-88)
+  id: Number,           // Terrace home number (1-88)
   stg: Number,          // Stage: 1, 2, or 3
   area: String,         // "Streetside" | "Shopside" | "Inner Circle" | "Reserve Outlook" | "Eastern Side"
   desc: String,         // Description e.g. "B - 3 Bed, 2.5 Bath, 2 Car"
@@ -366,7 +366,7 @@ The hero section displays the architect's siteplan with clickable overlays on ea
   tot: Number,          // Total built area (m²) = gI + gG + uI + uB + pat
   eF: Number,           // Exclusive Use Front Yard (m²)
   eB: Number,           // Exclusive Use Back Yard (m²)
-  lot: Number,          // Lot Size (m²) — total land area of the townhouse
+  lot: Number,          // Lot Size (m²) — total land area of the terrace home
   price: String,        // Display price e.g. "$1.65M – $1.68M" or "Custom"
   pMin: Number,         // Min price in dollars (0 if Custom)
   pMax: Number,         // Max price in dollars (0 if Custom)
@@ -471,13 +471,13 @@ const TH = [
 ];
 ```
 
-**Note:** All 88 townhouses are set to `status:"available"`. The sales agent manually updates status in the code as sales progress.
+**Note:** All 88 terrace homes are set to `status:"available"`. The sales agent manually updates status in the code as sales progress.
 
 ---
 
 ## 6. FLOOR PLAN TYPES
 
-Nine floor plan types. Each townhouse's `type` field maps to one of these.
+Nine floor plan types. Each terrace home's `type` field maps to one of these.
 
 | Type | Config | Ground Int | Garage | Upper Int | Total | Description |
 |------|--------|------------|--------|-----------|-------|-------------|
@@ -489,7 +489,7 @@ Nine floor plan types. Each townhouse's `type` field maps to one of these.
 | F | 4 Bed + Study, 2.5 Bath | 62.0m² | 37.9m² | 100.8m² | 200.7m² | Mid-size 4-bed with courtyard |
 | G | 3 Bed + Study, 2.5 Bath | 58.0m² | 38.7m² | 92.9m² | 189.5m² | Courtyard-focused layout |
 | H | 3 Bed + Study, 2.5 Bath | 69.3m² | 38.2m² | 116.9m² | 224.4m² | Premium large format |
-| J | 3 Bed + Study, 2.5 Bath | 58.0m² | 38.0m² | 94.4m² | 191.1m² | End-of-row townhouse |
+| J | 3 Bed + Study, 2.5 Bath | 58.0m² | 38.0m² | 94.4m² | 191.1m² | End-of-row terrace home |
 | Cust | Varies | Varies | Varies | Varies | Varies | Custom layout (TH 54, 62, 63, 64, 86) |
 
 **Floor plan image files** (upload these alongside this document):
@@ -512,7 +512,7 @@ Nine floor plan types. Each townhouse's `type` field maps to one of these.
 Upload all four alongside this document:
 
 1. **"Setbacks, Roads & Refuse" (Page 14)** → `Screenshot_2026-03-02_at_9_53_37_am.png`
-   **USE THIS AS THE PRIMARY INTERACTIVE SITEPLAN** — it has the clearest townhouse numbering with unit numbers and type codes visible on each footprint.
+   **USE THIS AS THE PRIMARY INTERACTIVE SITEPLAN** — it has the clearest terrace home numbering with unit numbers and type codes visible on each footprint.
 
 2. **"Landscaping & Deep Planting"** → `Screenshot_2026-03-02_at_9_53_44_am.png`
    Shows the Mediterranean garden setting with deep planting zones.

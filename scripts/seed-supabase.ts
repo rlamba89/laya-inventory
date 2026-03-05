@@ -61,7 +61,7 @@ async function seed() {
       name: "LAYA Residences",
       tagline: "Mediterranean-Inspired Luxury",
       location: "Taigum, Brisbane",
-      description: "88 Mediterranean-inspired luxury townhouses across 3 development stages",
+      description: "88 Mediterranean-inspired luxury terrace homes across 3 development stages",
       branding: {
         developer_name: "TRK Property Group",
         colors: {
@@ -80,7 +80,7 @@ async function seed() {
       siteplan_image_url: "/images/siteplans/site-plan.png",
       siteplan_width: 1984,
       siteplan_height: 1083,
-      unit_label: "Townhouse",
+      unit_label: "Terrace Home",
       unit_label_short: "TH",
       currency_code: "AUD",
       currency_symbol: "$",
