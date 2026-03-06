@@ -53,7 +53,8 @@ export function computeKpis(townhouses: Townhouse[]) {
 export function formatCurrency(value: number): string {
   if (value >= 1_000_000) {
     const m = value / 1_000_000;
-    return `$${m % 1 === 0 ? m.toFixed(0) : m.toFixed(2)}M`;
+    const formatted = m % 1 === 0 ? m.toFixed(0) : parseFloat(m.toFixed(3)).toString();
+    return `$${formatted}M`;
   }
   return `$${value.toLocaleString()}`;
 }
