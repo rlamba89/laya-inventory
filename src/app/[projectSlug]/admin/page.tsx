@@ -6,5 +6,5 @@ export default async function AdminPage({
   params: Promise<{ projectSlug: string }>;
 }) {
   const { projectSlug } = await params;
-  redirect(`/${projectSlug}/admin/prices`);
+  redirect(`/${projectSlug}/admin/unit-types`);
 }
