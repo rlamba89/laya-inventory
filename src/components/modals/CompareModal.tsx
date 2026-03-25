@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppState, useAppDispatch } from "@/providers/AppStateProvider";
 import { useProject } from "@/providers/ProjectProvider";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -27,6 +27,7 @@ export function CompareModal() {
   const dispatch = useAppDispatch();
   const { project } = useProject();
   const selected = townhouses.filter((th) => compareIds.includes(th.id));
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -38,6 +39,37 @@ export function CompareModal() {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [dispatch]);
 
+  async function handleDownloadPDF() {
+    setDownloading(true);
+    try {
+      const { pdf } = await import("@react-pdf/renderer");
+      const { ComparePDF } = await import("@/components/compare/ComparePDF");
+
+      const blob = await pdf(
+        ComparePDF({
+          selected,
+          projectName: project.name,
+          unitLabel: project.unit_label,
+          unitLabelShort: project.unit_label_short,
+          showPricing,
+        })
+      ).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${project.name.replace(/\s+/g, "_")}_comparison.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    } finally {
+      setDownloading(false);
+    }
+  }
+
   if (selected.length < 2) return null;
 
   return (
@@ -46,7 +78,7 @@ export function CompareModal() {
       onClick={() => dispatch({ type: "SET_MODAL", payload: null })}
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-warm-white shadow-xl"
+        className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-warm-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -57,9 +89,11 @@ export function CompareModal() {
         </button>
 
         <div className="p-8">
-          <h2 className="font-serif text-2xl font-semibold text-charcoal">
-            Compare {project.unit_label}s
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-serif text-2xl font-semibold text-charcoal">
+              Compare {project.unit_label}s
+            </h2>
+          </div>
 
           <div className="mt-6 overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -132,6 +166,22 @@ export function CompareModal() {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Download PDF button */}
+        <div className="flex justify-end px-8 pb-6">
+          <button
+            onClick={handleDownloadPDF}
+            disabled={downloading}
+            className="inline-flex items-center gap-2 rounded-full bg-charcoal px-5 py-2.5 text-xs font-semibold text-warm-white transition-all hover:bg-charcoal-mid disabled:opacity-50"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            {downloading ? "Generating..." : "Download PDF"}
+          </button>
         </div>
       </div>
     </div>

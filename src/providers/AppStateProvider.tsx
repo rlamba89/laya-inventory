@@ -32,7 +32,7 @@ function appReducer(state: AppState, action: Action): AppState {
       const id = action.payload;
       const ids = state.compareIds.includes(id)
         ? state.compareIds.filter((i) => i !== id)
-        : state.compareIds.length < 3
+        : state.compareIds.length < 4
           ? [...state.compareIds, id]
           : state.compareIds;
       return { ...state, compareIds: ids };

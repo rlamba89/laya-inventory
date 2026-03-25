@@ -45,3 +45,9 @@ next-env.d.ts
 /.clerk/
 
 .env.local
+
+# scripts & data files
+pipedrive.py
+pipedrive.xlsx
+update_results.csv
+sms-campaign/

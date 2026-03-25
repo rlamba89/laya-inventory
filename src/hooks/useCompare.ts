@@ -32,7 +32,7 @@ export function useCompare() {
     toggle,
     clear,
     isSelected,
-    canAdd: compareIds.length < 3,
+    canAdd: compareIds.length < 4,
     canCompare: compareIds.length >= 2,
   };
 }
