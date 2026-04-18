@@ -114,11 +114,17 @@ export function DetailModal({ thId }: { thId: number }) {
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-terracotta">
             {th.area} &middot; Stage {th.stg}
           </p>
-          <div className="mt-2 flex items-center gap-3">
+          <div className="mt-2 flex flex-wrap items-center gap-3">
             <StatusBadge status={th.status} />
             {th.type && (
               <span className="text-[10px] font-medium text-stone">
                 Type {th.type}
+              </span>
+            )}
+            {th.agentName && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-indigo-700 ring-1 ring-indigo-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                Agent: {th.agentName}
               </span>
             )}
           </div>

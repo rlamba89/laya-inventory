@@ -122,12 +122,26 @@ export interface Unit {
   hotspot_x: number | null;
   hotspot_y: number | null;
   notes: string | null;
+  agent_id: string | null;
 
   // Joined data (populated by queries)
   groups?: Group[];
   unit_type?: UnitType;
   current_price?: UnitPrice;
   media?: Media[];
+  agent?: Agent | null;
+}
+
+// ============================================
+// Outside Agents (global across projects)
+// ============================================
+
+export interface Agent {
+  id: string;
+  name: string;
+  notes: string | null;
+  created_at?: string;
+  assigned_count?: number;
 }
 
 export interface UnitPrice {
@@ -190,6 +204,8 @@ export interface Townhouse {
   hotspot_y: number | null;
   renderUrl: string | null;
   unitTypeId: string | null;
+  agentId: string | null;
+  agentName: string | null;
 }
 
 // ============================================

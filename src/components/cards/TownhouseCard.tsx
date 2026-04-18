@@ -110,6 +110,14 @@ export function TownhouseCard({ th, index }: TownhouseCardProps) {
           </span>
         </div>
 
+        {/* Agent assignment tag */}
+        {th.agentName && (
+          <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-indigo-700 ring-1 ring-indigo-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+            Agent: {th.agentName}
+          </div>
+        )}
+
         {/* Status + Price */}
         <div className="mt-3 flex flex-col gap-1">
           <StatusBadge status={th.status} />

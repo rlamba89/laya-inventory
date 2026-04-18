@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: "Units", href: "units", icon: "#" },
 
   { label: "Stages", href: "stages", icon: "S" },
+  { label: "Agents", href: "agents", icon: "A" },
   { label: "Siteplan", href: "siteplan", icon: "P" },
   { label: "Media", href: "media", icon: "M" },
   { label: "Settings", href: "settings", icon: "G" },

@@ -96,6 +96,7 @@ export async function PATCH(
     "unit_type_id", "label", "status", "beds", "baths", "cars",
     "ground_internal", "ground_garage", "upper_internal", "upper_balcony",
     "patio", "total_area", "front_yard", "back_yard", "lot_size", "notes",
+    "agent_id",
   ];
 
   const update: Record<string, unknown> = {};
@@ -104,8 +105,9 @@ export async function PATCH(
       update[field] = body[field] === "" ? null : body[field];
     }
   }
-  // Special case: unit_type_id empty string → null
+  // Special case: unit_type_id / agent_id empty string → null
   if (update.unit_type_id === "") update.unit_type_id = null;
+  if (update.agent_id === "") update.agent_id = null;
 
   if (Object.keys(update).length > 0) {
     const { error } = await supabase

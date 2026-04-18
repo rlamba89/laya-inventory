@@ -231,6 +231,9 @@ export function UnitsTable({
               >
                 Status{sortIndicator("status")}
               </th>
+              <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-wider text-stone">
+                Agent
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -272,11 +275,21 @@ export function UnitsTable({
                     {u.status}
                   </span>
                 </td>
+                <td className="px-4 py-3">
+                  {u.agent_name ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                      {u.agent_name}
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-stone/60">—</span>
+                  )}
+                </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-sm text-stone">
+                <td colSpan={9} className="px-4 py-8 text-center text-sm text-stone">
                   No units match your filters
                 </td>
               </tr>

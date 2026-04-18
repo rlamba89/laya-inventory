@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AdminUnit } from "@/lib/data";
-import { UnitPrice } from "@/lib/types";
+import { UnitPrice, Agent } from "@/lib/types";
 
 interface UnitEditPanelProps {
   unit: AdminUnit;
@@ -35,6 +35,7 @@ interface UnitDetail {
   notes: string;
   stage_group_id: string;
   area_group_id: string;
+  agent_id: string;
 }
 
 const STATUS_OPTIONS = [
@@ -94,6 +95,16 @@ export function UnitEditPanel({
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
 
+  // Agents
+  const [agents, setAgents] = useState<Agent[]>([]);
+
+  useEffect(() => {
+    fetch("/api/agents")
+      .then((r) => (r.ok ? r.json() : { agents: [] }))
+      .then((d) => setAgents(d.agents ?? []))
+      .catch(() => setAgents([]));
+  }, []);
+
   const loadUnit = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -123,6 +134,7 @@ export function UnitEditPanel({
         notes: u.notes ?? "",
         stage_group_id: groups.stage ?? "",
         area_group_id: groups.area ?? "",
+        agent_id: u.agent_id ?? "",
       });
 
       // Initialize price fields from current price
@@ -178,6 +190,7 @@ export function UnitEditPanel({
           back_yard: numOrNull(form.back_yard),
           lot_size: numOrNull(form.lot_size),
           notes: form.notes || null,
+          agent_id: form.agent_id || null,
           groups: {
             stage: form.stage_group_id || undefined,
             area: form.area_group_id || undefined,
@@ -193,6 +206,7 @@ export function UnitEditPanel({
       const selectedType = unitTypes.find((t) => t.id === form.unit_type_id);
       const selectedStage = stages.find((s) => s.id === form.stage_group_id);
       const selectedArea = areas.find((a) => a.id === form.area_group_id);
+      const selectedAgent = agents.find((a) => a.id === form.agent_id);
 
       onSaved({
         ...unit,
@@ -204,6 +218,8 @@ export function UnitEditPanel({
         unit_type_code: selectedType?.code ?? null,
         stage: selectedStage?.name ?? unit.stage,
         area: selectedArea?.name ?? unit.area,
+        agent_id: form.agent_id || null,
+        agent_name: selectedAgent?.name ?? null,
         current_price: currentPrice,
       });
     } catch (err) {
@@ -382,6 +398,27 @@ export function UnitEditPanel({
                     </select>
                   </Field>
                 </div>
+              </Section>
+
+              {/* Agent assignment */}
+              <Section title="Outside Agent">
+                <Field label="Assigned to agent">
+                  <select
+                    value={form.agent_id}
+                    onChange={(e) => updateField("agent_id", e.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="">None</option>
+                    {agents.map((a) => (
+                      <option key={a.id} value={a.id}>{a.name}</option>
+                    ))}
+                  </select>
+                </Field>
+                {agents.length === 0 && (
+                  <p className="mt-1 text-[10px] text-stone">
+                    No agents yet — create one in Admin &rarr; Agents.
+                  </p>
+                )}
               </Section>
 
               {/* Pricing */}

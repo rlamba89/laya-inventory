@@ -142,6 +142,7 @@ export interface Database {
           hotspot_x: number | null;
           hotspot_y: number | null;
           notes: string | null;
+          agent_id: string | null;
           sort_order: number;
           created_at: string;
           updated_at: string;
@@ -169,9 +170,25 @@ export interface Database {
           hotspot_x?: number | null;
           hotspot_y?: number | null;
           notes?: string | null;
+          agent_id?: string | null;
           sort_order?: number;
         };
         Update: Partial<Database["public"]["Tables"]["units"]["Insert"]>;
+      };
+      agents: {
+        Row: {
+          id: string;
+          name: string;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          notes?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["agents"]["Insert"]>;
       };
       unit_groups: {
         Row: {

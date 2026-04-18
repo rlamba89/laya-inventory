@@ -185,6 +185,22 @@ export async function getTownhouses(projectSlug?: string): Promise<Townhouse[]> 
 
   if (error || !units) return [];
 
+  // Fetch agent names via admin client (agents table is admin-only; RLS blocks anon).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const agentIds = [...new Set((units as any[]).map((u) => u.agent_id).filter(Boolean))] as string[];
+  const agentMap = new Map<string, string>();
+  if (agentIds.length > 0) {
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createAdminClient();
+    const { data: agentRows } = await adminSupabase
+      .from("agents")
+      .select("id, name")
+      .in("id", agentIds);
+    for (const a of agentRows ?? []) {
+      agentMap.set(a.id as string, a.name as string);
+    }
+  }
+
   // Batch-fetch render media for all unit types (for siteplan hover)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const unitTypeIds = [...new Set(units.map((u: any) => {
@@ -243,6 +259,7 @@ export async function getTownhouses(projectSlug?: string): Promise<Townhouse[]> 
   return units.map((u: any): Townhouse => {
     const price = Array.isArray(u.current_price) ? u.current_price[0] : u.current_price;
     const unitType = Array.isArray(u.unit_type) ? u.unit_type[0] : u.unit_type;
+    const agentName = u.agent_id ? agentMap.get(u.agent_id) ?? null : null;
     const groupInfo = unitGroupMap.get(u.id) ?? { stage: "", area: "" };
 
     // Parse stage number from "Stage 1" -> 1
@@ -274,6 +291,8 @@ export async function getTownhouses(projectSlug?: string): Promise<Townhouse[]> 
       hotspot_y: u.hotspot_y ?? null,
       renderUrl: unitType?.id ? (renderMap.get(unitType.id) ?? null) : null,
       unitTypeId: unitType?.id ?? null,
+      agentId: u.agent_id ?? null,
+      agentName: agentName,
     };
   });
 }
@@ -324,6 +343,8 @@ export interface AdminUnit {
   area: string;
   unit_type_id: string | null;
   unit_type_code: string | null;
+  agent_id: string | null;
+  agent_name: string | null;
   current_price: {
     price_min: number;
     price_max: number;
@@ -348,7 +369,7 @@ export async function getAdminUnits(projectSlug: string): Promise<AdminUnit[]> {
   const { data: units } = await supabase
     .from("units")
     .select(`
-      unit_number, label, beds, baths, status, unit_type_id,
+      unit_number, label, beds, baths, status, unit_type_id, agent_id,
       unit_type:unit_types(code),
       current_price:unit_prices(price_min, price_max, display_text, price_type)
     `)
@@ -357,6 +378,20 @@ export async function getAdminUnits(projectSlug: string): Promise<AdminUnit[]> {
     .order("unit_number");
 
   if (!units) return [];
+
+  // Fetch agent names separately (avoid depending on PostgREST FK cache)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const agentIds = [...new Set((units as any[]).map((u) => u.agent_id).filter(Boolean))] as string[];
+  const agentMap = new Map<string, string>();
+  if (agentIds.length > 0) {
+    const { data: agentRows } = await supabase
+      .from("agents")
+      .select("id, name")
+      .in("id", agentIds);
+    for (const a of agentRows ?? []) {
+      agentMap.set(a.id as string, a.name as string);
+    }
+  }
 
   // Get unit groups for stage/area names
   const { data: allUnits } = await supabase
@@ -404,6 +439,8 @@ export async function getAdminUnits(projectSlug: string): Promise<AdminUnit[]> {
       area: groupInfo.area,
       unit_type_id: u.unit_type_id ?? null,
       unit_type_code: unitType?.code ?? null,
+      agent_id: u.agent_id ?? null,
+      agent_name: u.agent_id ? agentMap.get(u.agent_id) ?? null : null,
       current_price: price ?? null,
     };
   });
